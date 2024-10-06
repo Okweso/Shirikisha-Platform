@@ -117,3 +117,11 @@ To run tests for the backend:
 ```bash
 python manage.py test
 ```
+
+Testing should cover the following aspects:
+
+- Submission of opinions
+- Analysis data retrieval
+- API response validation
+  
+For frontend testing, ensure that all visualizations and user interactions work as expected, especially the charts and pagination.
