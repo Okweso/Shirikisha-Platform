@@ -67,7 +67,9 @@ Once both servers are running, you can access the platform by visiting ```http:/
 **Viewing Other Opinions**
 - Users can click the "View Opinions" button on the Analysis page to see opinions submitted by others. The opinions are paginated, showing 10 per page, ordered by submission date.
 ## API Documentation
+
 **Issues API**
+
 Endpoint:   ``GET /issues/``
 
 Returns a list of issues in the following format:
@@ -84,6 +86,7 @@ Returns a list of issues in the following format:
 ]
 ```
 **Opinions API**
+
 Endpoint: ``POST /opinions/``
 
 Example request body:
@@ -96,16 +99,19 @@ Example request body:
 }
 ```
 **Statistics API**
+
 Endpoint: GET ``/issues/<int:id>/statistics/``
 
 Returns sentiment statistics for a particular issue.
 
 **Sentiment Analysis API**
+
 Endpoint: GET ``/issues/<int:issue_id>/opinions/sentiments-analysis/``
 
 Returns the sentiment analysis of a particular issue
 
 ## Testing
+
 To run tests for the backend:
 
 ```bash
