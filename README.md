@@ -1,4 +1,4 @@
-# Shirikisha
+# Shirikisha Platform
 
 Shirikisha is a public participation platform for Kenyan citizens to engage with current affairs, express their opinions on various issues (bills, policies, or matters of national importance), and analyze public sentiment. The platform allows users to submit opinions anonymously and view real-time analysis of public sentiment, helping decision-makers understand the pulse of the people.
 
@@ -20,5 +20,21 @@ To set up and run Shirikisha locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/shirikisha.git
-   cd shirikisha Platform
+   git clone https://github.com/Okweso/Shirikisha-Platform.git```
+
+
+2. **Backend Setup**:
+   - Ensure you have Python 3 and MySQL installed.
+   - Install backend dependencies:
+   ```bash
+   pip install -r requirements.txt```
+
+   - Configure the MySQL database in the settings.py file.
+   - Run database migrations:
+   ```bash
+   python manage.py migrate```
+   - Start the backend server:
+   ```bash
+   python manage.py runserver```
+
+  
