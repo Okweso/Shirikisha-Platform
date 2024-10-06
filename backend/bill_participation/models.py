@@ -34,3 +34,4 @@ class Opinion(models.Model):
     issue_id = models.ForeignKey(Issue, on_delete=models.CASCADE, null=True, blank=True)
     user_id = models.CharField(max_length=255, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
+    hashed_ip = models.CharField(max_length=255, null=True, blank=True)

@@ -39,8 +39,8 @@ function Layout(){
                 <ul className="flex space-x-4">
                     <li><a href="/" className="hover:text-green-400">Home</a></li>
                     {/* <li><a href="#" className="hover:text-green-400">About</a></li> */}
-                    <li><a href="/Bills" className="hover:text-green-400">Bills</a></li>
-                    <li><a href="/Results" className="hover:text-green-400">Results</a></li>
+                    <li><a href="/Bills" className="hover:text-green-400">Public Agenda</a></li>
+                    <li><a href="/Analysis" className="hover:text-green-400">Analysis</a></li>
                 </ul>
                 </nav>
 
@@ -49,7 +49,7 @@ function Layout(){
                 href="/Bills"
                 className="bg-green-500 text-white px-4 py-2 rounded-lg mt-4 md:mt-0 hover:bg-green-600"
                 >
-                View Bills
+                View Public Agenda
                 </a>
             </div>
             </header>

@@ -226,7 +226,7 @@ const BillsPage = () => {
                   <div className="flex justify-between items-center mt-4 space-x-4">
                     {/* Secondary CTA: View Analysis */}
                     <a
-                      href='Results' // This links to the analysis page for the specific issue
+                      href='Analysis' // This links to the analysis page for the specific issue
                       className="bg-gray-400 text-white py-2 px-4 rounded-lg w-full hover:bg-gray-500 transition duration-300 flex items-center justify-center"
                     >
                       <span className="mr-2">📊</span> View Analysis
@@ -237,7 +237,7 @@ const BillsPage = () => {
                       className="bg-green-500 text-white py-2 px-4 rounded-lg w-full hover:bg-green-600 transition duration-300"
                       onClick={() => window.open(issue.link, '_blank')}
                     >
-                      <span className="mr-2">📄</span> View Full Bill
+                      <span className="mr-2">📄</span> View in Detail
                     </button>
                   </div>
                 </div>

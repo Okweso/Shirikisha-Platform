@@ -112,7 +112,7 @@ const Results = () => {
             </span> */}
             <p className="text-sm mt-2">Total Participants: {totalParticipants[issue.id] || 0}</p>
             <Link to={`/issues/${issue.id}/analysis`} className="mt-4 block bg-black text-white py-2 px-4 rounded hover:bg-red-600 text-center">
-              View Analysis
+              View Detailed Analysis
             </Link>
 
                   </div>
