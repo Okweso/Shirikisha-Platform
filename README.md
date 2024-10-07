@@ -66,6 +66,15 @@ Once both servers are running, you can access the platform by visiting ```http:/
 
 **Viewing Other Opinions**
 - Users can click the "View Opinions" button on the Analysis page to see opinions submitted by others. The opinions are paginated, showing 10 per page, ordered by submission date.
+
+Below is a video showing how to navigate and use Shirikisha Platform.
+
+
+
+https://github.com/user-attachments/assets/7398c2de-e7dc-4425-8678-46c9b5d50a4e
+
+
+
 ## API Documentation
 
 **Issues API**
