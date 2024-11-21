@@ -40,4 +40,4 @@ urlpatterns = [
     path('issues/<int:id>/opinions/', views.select_opinions, name='user_opinions'),
     path('issues/<int:issue_id>/opinions/sentiments-analysis/', views.issue_analysis, name='issue_analysis'),
     path('issues/opinions/topics/', views.lda_topic_modeling, name='topics')
-]
+ ]

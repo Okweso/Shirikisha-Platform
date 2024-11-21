@@ -26,7 +26,7 @@ class OpinionViewSet(viewsets.ModelViewSet):
             ip = x_forwarded_for.split(',')[0]  # Take the first IP in the list  
         else:  
             ip = request.META.get('REMOTE_ADDR')  
-        print(ip)  
+       # print(ip)  
         return ip  
 
     # Function to hash the IP address using SHA-256  
@@ -58,7 +58,7 @@ class OpinionViewSet(viewsets.ModelViewSet):
             'whether_have_read': request.data.get('whether_have_read'),  
             'whether_support': request.data.get('whether_support'),  
             'user_opinion': request.data.get('user_opinion'),  
-            'issue_id': issue_instance,  # This should be a valid Issue ID  
+            'issue_id': issue_instance,    
             'user_id': request.data.get('user_id'),  
             'hashed_ip': hashed_ip  
         }  
@@ -83,6 +83,7 @@ def Session_ID(request):
     #return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
+#a view function for the statistics
 def issue_statistics(request, id):
     opinions = Opinion.objects.filter(issue_id__id=id)
     total_participants = opinions.count()
@@ -107,6 +108,7 @@ def issue_statistics(request, id):
     return JsonResponse(data)
 
 
+#view to fetch opinion based on the issue
 def select_opinions(request, id):
     opinions = Opinion.objects.filter(issue_id__id=id)
     # Serialize the queryset into a list of dictionaries
@@ -123,20 +125,22 @@ from spacy import load
 from nltk.corpus import stopwords
 from gensim import corpora
 from gensim.models import LdaModel
-#from my_aspect_extraction_module import extract_aspects
+from nltk.tokenize import word_tokenize
+from django.http import JsonResponse
 import spacy
 import nltk
+from collections import Counter
 
 
-# Download stopwords (you can run this once in your environment)
+# Download stopwords and tokenizer
 nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('punkt_tab')
 
-
-
-
-# Example GPT model for sentiment analysis
+# GPT model for sentiment analysis
 sentiment_analyzer = pipeline("sentiment-analysis")
 nlp = spacy.load("en_core_web_sm")
+
 
 def extract_aspects(text):
     """
@@ -150,50 +154,73 @@ def extract_aspects(text):
             aspects.append(ent.text)
     return aspects
 
+
 def issue_analysis(request, issue_id):
-    opinions = Opinion.objects.filter(issue_id__id=issue_id)
-    
-    sentiments = []
-    aspects = []
-    entities = []
-    common_themes = []
-    
-    # Collect text from opinions
+    # Fetch opinions related to the specific issue
+    opinions = Opinion.objects.filter(issue_id=issue_id)
     opinion_texts = [opinion.user_opinion for opinion in opinions]
     
-    # Perform sentiment and aspect extraction
-    for opinion_text in opinion_texts:
-        sentiment = sentiment_analyzer(opinion_text)[0]
-        doc = nlp(opinion_text)
-        
-        # Named entity recognition
-        entities.append([(ent.text, ent.label_) for ent in doc.ents])
-        
-        # Extract common aspects (e.g., reasons for amendment or negative opinions)
-        aspects.append(extract_aspects(opinion_text))  # You can define this function
-        
-        # Store the sentiment result
-        sentiments.append({
-            "text": opinion_text,
-            "sentiment": sentiment['label'],
-            "confidence": sentiment['score']
-        })
+    if not opinion_texts:
+        return JsonResponse({"error": "No opinions found for this issue"}, status=404)
     
-    # Topic modeling (LDA for common themes)
-    common_themes = lda_topic_modeling(opinion_texts)
+    # Combine all opinions into one text for analysis
+    combined_text = " ".join(opinion_texts)
+    
+    # Perform sentiment analysis on the combined text
+    sentiment = sentiment_analyzer(combined_text)[0]
+    
+    # Extract aspects using NER
+    aspects = extract_aspects(combined_text)
+    
+    # Extract top keywords and format them into meaningful sentences
+    keywords = lda_topic_modeling(opinion_texts)
+    framed_sentences = frame_keywords_into_sentences(keywords)
     
     return JsonResponse({
-        "sentiments": sentiments,
-        "aspects": aspects,
-        "entities": entities,
-        "themes": common_themes
+        "overall_sentiment": {
+            "sentiment": sentiment['label'],
+            "confidence": sentiment['score']
+        },
+        "top_aspects": aspects[:5],  # Limit to top 5 aspects
+        "themes": framed_sentences  # Top keywords framed into sentences
     })
 
-# Topic Modeling (LDA)
+
+# Topic Modeling (LDA) for Top Keywords
 def lda_topic_modeling(texts):
     stop_words = set(stopwords.words('english'))
-    texts = [[word for word in document.lower().split() if word not in stop_words] for document in texts]
+    texts = [
+        [word for word in word_tokenize(document.lower()) if word.isalnum() and word not in stop_words]
+        for document in texts
+    ]
+    
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
-    lda = LdaModel(corpus, num_topics=5, id2word=dictionary, passes=15)
-    return lda.show_topics()
+    lda = LdaModel(corpus, num_topics=1, id2word=dictionary, passes=15)  # Focus on a single overall topic
+    
+    # Extract top keywords from the most dominant topic
+    topic_terms = lda.show_topic(0, topn=5)  # Get top 5 terms
+    top_keywords = [term for term, _ in topic_terms]
+    
+    return top_keywords
+
+
+# Frame Keywords into Meaningful Sentences
+def frame_keywords_into_sentences(keywords):
+    sentences = []
+    for keyword in keywords:
+        # Frame a sentence based on the keyword
+        if keyword.lower() == "amend":
+            sentences.append("Citizens suggest the bill should be amended.")
+        elif keyword.lower() == "impeachment":
+            sentences.append("Impeachment discussions are a key focus.")
+        elif keyword.lower() == "support":
+            sentences.append("There is significant support for the issue.")
+        elif keyword.lower() == "president":
+            sentences.append("The president's role is being heavily debated.")
+        elif keyword.lower() == "want":
+            sentences.append("People express their desires about this issue.")
+        else:
+            sentences.append(f"The term '{keyword}' is frequently mentioned.")
+    
+    return sentences

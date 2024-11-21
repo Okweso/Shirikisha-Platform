@@ -135,7 +135,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [  
-    "http://localhost:3000",  # Adjust the port if needed  
+    "https://shirikisha.techieswall.com",  # Adjust the port if needed  
 ]  
 
 CORS_ALLOW_ALL_ORIGINS = True
