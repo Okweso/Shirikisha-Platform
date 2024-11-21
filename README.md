@@ -71,7 +71,11 @@ Below is a video showing how to navigate and use Shirikisha Platform.
 
 
 
-https://github.com/user-attachments/assets/7398c2de-e7dc-4425-8678-46c9b5d50a4e
+
+
+https://github.com/user-attachments/assets/494aba34-e3de-4798-a617-bba663e40ae8
+
+
 
 
 
