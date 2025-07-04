@@ -138,3 +138,4 @@ Testing should cover the following aspects:
 - API response validation
   
 For frontend testing, ensure that all visualizations and user interactions work as expected, especially the charts and pagination.
+
