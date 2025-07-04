@@ -62,7 +62,7 @@ function Layout(){
         <Outlet />
         <footer className="bg-black text-white py-8">
                 <div className="container mx-auto text-center">
-                <p>&copy; 2024 Shirikisha. All rights reserved.</p>
+                <p>&copy; 2025 Shirikisha. All rights reserved.</p>
                 </div>
             </footer>
         </div>
